@@ -1,7 +1,7 @@
 const database = require ('../model/database.json')
 const fs = require('fs')
 
-const updateAllStudents = async (req, res) => {
+const updateStudents = async (req, res) => {
   const id = Number(req.params.id)
     const student = database.find((el) => el.id === id);
 
@@ -25,5 +25,5 @@ const updateAllStudents = async (req, res) => {
 }
 
 module.exports = {
-    updateAllStudents
+    updateStudents
 }
