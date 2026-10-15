@@ -1,30 +1,28 @@
+const database = require('../model/database.json');
 const fs = require('fs');
-const path = require('path');
 
-const databasePath = path.join(__dirname, '../model/database.json');
-
-const readDatabase = async () => {
-    const contents = await fs.promises.readFile(databasePath, 'utf8');
-    return JSON.parse(contents);
-};
-
-const studentRecord = async (database) => {
-    await fs.promises.writeFile(databasePath, JSON.stringify(database, null, 2), 'utf8');
+const studentDB = (data) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./model/database.json', data, 'utf8', (error) => {
+            if (error) {
+                console.error('Error writing to file:', error);
+                reject(error);
+            } else {
+                resolve('File written successfully');
+            }
+        });
+    });
 };
 
 const newStudent = async (req, res) => {
     try {
-        const database = await readDatabase();
-        const { fullName, age, gender, class: studentClass, DOB, address, subject, attendance } = req.body;
-        const studentId = database.reduce((maxId, student) => {
-            return Math.max(maxId, Number(student.studentId) || 0);
-        }, 0) + 1;
+        const { fullName, age, gender, DOB, address, subject, attendance } = req.body;
+        const studentId = database.length + 1
         const student = {
             studentId,
             fullName,
             age,
             gender,
-            class: studentClass,
             DOB,
             address,
             subject,
@@ -32,7 +30,7 @@ const newStudent = async (req, res) => {
         };
 
         database.push(student);
-        await studentRecord(database);
+        await studentDB(JSON.stringify(database, null, 2));
         return res.status(201).json({
             message: 'Student created successfully',
             data: student
@@ -48,8 +46,7 @@ const newStudent = async (req, res) => {
 const oneStudent = async (req, res) => {
     try {
         const studentId = Number(req.params.id);
-        const database = await readDatabase();
-        const student = database.find((item) => Number(item.studentId) === studentId);
+        const student = database.find((e) => Number(e.studentId) === studentId);
 
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
@@ -70,31 +67,32 @@ const oneStudent = async (req, res) => {
 const updateStudents = async (req, res) => {
     try {
         const studentId = Number(req.params.id);
-        const database = await readDatabase();
-        const student = database.find((item) => Number(item.studentId) === studentId);
+        const student = database.find((e) => Number(e.studentId) === studentId);
 
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
 
+        const { fullName, age, gender, DOB, address, subject, attendance } = req.body;
         const fields = {
-            fullName: 'fullName',
-            age: 'age',
-            gender: 'gender',
-            class: 'class',
-            DOB: 'DOB',
-            address: 'address',
-            subject: 'subject',
-            attendance: 'attendance'
+            fullName,
+            age,
+            gender,
+            DOB,
+            address,
+            subject,
+            attendance
         };
 
-        for (const [requestField, studentField] of Object.entries(fields)) {
-            if (Object.prototype.hasOwnProperty.call(req.body, requestField)) {
-                student[studentField] = req.body[requestField];
-            }
-        }
+        student.fullName = fullName || student.fullName
+        student.age = age || student.age
+        student.gender = gender || student.gender
+        student.DOB = DOB || student.DOB
+        student.address = address || student.address
+        student.subject = subject || student.subject
+        student.attendance = attendance || student.attendance
 
-        await studentRecord(database);
+        await studentDB(JSON.stringify(database, null, 2));
         return res.status(200).json({
             message: 'Student updated successfully',
             data: student
@@ -110,7 +108,6 @@ const updateStudents = async (req, res) => {
 const deleteStudents = async (req, res) => {
     try {
         const studentId = Number(req.params.id);
-        const database = await readDatabase();
         const studentIndex = database.findIndex((item) => Number(item.studentId) === studentId);
 
         if (studentIndex === -1) {
@@ -118,7 +115,7 @@ const deleteStudents = async (req, res) => {
         }
 
         const [student] = database.splice(studentIndex, 1);
-        await studentRecord(database);
+        await studentDB(JSON.stringify(database, null, 2));
         return res.status(200).json({
             message: 'Student deleted successfully',
             data: student
@@ -131,9 +128,18 @@ const deleteStudents = async (req, res) => {
     }
 };
 
+const getAllStudents = async (req, res) => {
+    const students = database
+    res.status(200).json({
+        message: 'All students retrieved successfully',
+        data: students
+    })
+}
+
 module.exports = {
     updateStudents,
     newStudent,
     oneStudent,
-    deleteStudents
+    deleteStudents,
+    getAllStudents
 };
