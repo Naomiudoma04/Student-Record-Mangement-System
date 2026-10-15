@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const {updateUser} = require('../controller/studentController')
+const {updateStudent} = require('../controller/studentController')
 
-router.put('/updateUser id:', updateUser)
+router.put('/updateStudent id:', updateStudent)
 
 module.exports = router
