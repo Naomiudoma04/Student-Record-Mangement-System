@@ -1,6 +1,59 @@
 const database = require ('../model/database.json')
 const fs = require('fs')
 
+const studentRecord = (data) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./model/database.json', data, (error, data) => {
+            if (error) {
+                reject('Error writing to file')
+            } else {
+                resolve('File written successfully')
+            }
+        });
+    });
+};
+
+
+const newStudent = async (req, res)=> {
+    const {fullName, age, gender, DOB, address, subject, attendance} = req.body
+    const studentId = database.length + 1
+    const student = {
+        studentId,
+      fullName,
+      age,
+      gender,
+      DOB,
+      address,
+      subject,
+      attendance
+    }
+    database.push(student)
+    // console.log('database:', database)
+    await studentRecord(JSON.stringify(database, null, 2))
+    res.status(201).json({
+        message: 'User created successfully',
+        data: user
+    })
+    
+};
+
+const oneStudent = (req, res) => {
+    const studentId = req.params.id;
+const student = database.find((e)=> e.studentId === stundentId);
+if (!student){
+    return res.status(404).json({
+        message : 'Student not found'
+    })
+}
+
+    return res.status(200).json({
+        message: 'St found successfully',
+        data: user
+    });
+};
+
+
+
 const updateStudents = async (req, res) => {
   const id = Number(req.params.id)
     const student = database.find((el) => el.id === id);
@@ -25,5 +78,7 @@ const updateStudents = async (req, res) => {
 }
 
 module.exports = {
-    updateStudents
+    updateStudents,
+    newStudent,
+    oneStudent
 }
