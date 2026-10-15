@@ -5,4 +5,4 @@ router.put('/updateUser/:id', updateStudents)
 router.post('/create', newStudent)
 router.get('/getOne/:id', oneStudent)
 
-module.exports = router
+module.exports = router;

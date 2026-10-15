@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "studentId": 1,
+    "fullName": "Ailakhu oshiobughie",
+    "age": 11,
+    "gender": "Male",
+    "DOB": "11/10/1111",
+    "address": "88 idewu street",
+    "subject": "Mathematics",
+    "attendance": 11
+  },
+  {
+    "studentId": 2,
+    "fullName": "Ailakhu oshiobughie",
+    "age": 11,
+    "gender": "Male",
+    "DOB": "11/10/1111",
+    "address": "88 idewu street",
+    "subject": "Mathematics",
+    "attendance": 11
+  }
+]

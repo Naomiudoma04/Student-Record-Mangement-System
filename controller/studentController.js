@@ -31,8 +31,8 @@ const newStudent = async (req, res)=> {
     // console.log('database:', database)
     await studentRecord(JSON.stringify(database, null, 2))
     res.status(201).json({
-        message: 'User created successfully',
-        data: user
+        message: 'Student created successfully',
+        data: student
     })
     
 };
@@ -82,3 +82,4 @@ module.exports = {
     newStudent,
     oneStudent
 }
+
