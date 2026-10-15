@@ -20,10 +20,31 @@ const updateStudents = async (req, res) => {
 
     res.status(200).json({
         message: 'Student updated successfully',
-        data: Student
+        data: student
     })
 }
 
-module.exports = {
-    updateStudents
+const deleteStudents = async (req, res) => {
+    const student = Number(req.params.student)
+
+    const studentIndex = database.findIndex((el) => el.student === student) 
+    if(studentIndex === -1){
+        return res.status(404).json({
+         message: 'Student not found'
+            
+        })
+    }
+
+    database.splice(studentIndex, 1)
+    await studentRecord(JSON.stringify(database, null, 2))
+    res.status(200).json({
+        message:'Student deleted successfully',
+        data: database
+    });
 }
+
+module.exports = {
+    updateStudents,
+    deleteStudents
+}
+
