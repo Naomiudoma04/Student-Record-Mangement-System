@@ -1,8 +1,10 @@
-const router = require('express').Router()
-const {updateStudents, deleteStudents} = require('../controller/studentController')
+const router = require("express").Router();
+const {
+  getAllStudents,
+  updateUser,
+} = require("../controller/studentController");
 
-router.put('/updateStudents/updateid:', updateStudents)
+router.get("/students", getAllStudents);
+router.put("/updateUser/:id", updateUser);
 
-router.delete('/deleteStudents/studentid:', deleteStudents)
-
-module.exports = router
+module.exports = router;

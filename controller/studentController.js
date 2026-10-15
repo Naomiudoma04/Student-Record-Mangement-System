@@ -1,6 +1,26 @@
 const database = require ('../model/database.json')
 const fs = require('fs')
 
+const studentRecords = require("../model/studentRecords.json");
+
+// 1. GET METHOD: View all students
+getAllStudents = async (req, res) => {
+  try {
+    const students = await Student.find();
+
+    res.status(200).json({
+      success: true,
+      count: students.length,
+      data: students,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
+module.exports = { getAllStudents };
+
+
 const updateStudents = async (req, res) => {
   const id = Number(req.params.id)
     const student = database.find((el) => el.id === id);
@@ -44,7 +64,6 @@ const deleteStudents = async (req, res) => {
 }
 
 module.exports = {
-    updateStudents,
-    deleteStudents
+    updateStudents
 }
 
