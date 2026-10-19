@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 
-const PORT = process.env.PORT
+const PORT = 7900
 const studentRoute = require('./router/studentRouter')
 
 const app = express()
