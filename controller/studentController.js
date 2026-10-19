@@ -114,6 +114,12 @@ const deleteStudents = async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
+//lets simulate a conflict here
+// let's say we have a conflict in the code, and we need to resolve it. 
+// We can choose to keep the existing code or modify it based on our requirements. 
+// In this case, we will keep the existing code as it is.
+// we can also add a comment to indicate that we have resolved the conflict.
+
         const [student] = database.splice(studentIndex, 1);
         await studentDB(JSON.stringify(database, null, 2));
         return res.status(200).json({
