@@ -115,6 +115,12 @@ const deleteStudents = async (req, res) => {
         }
 
         database.slice(studentIndex, studentIndex + 1);
+//lets simulate a conflict here
+// let's say we have a conflict in the code, and we need to resolve it. 
+// We can choose to keep the existing code or modify it based on our requirements. 
+// In this case, we will keep the existing code as it is.
+// we can also add a comment to indicate that we have resolved the conflict.
+      
         await studentDB(JSON.stringify(database, null, 2));
         return res.status(200).json({
             message: 'Student deleted successfully'
