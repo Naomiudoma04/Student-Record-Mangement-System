@@ -114,11 +114,10 @@ const deleteStudents = async (req, res) => {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        const [student] = database.splice(studentIndex, 1);
+        database.slice(studentIndex, studentIndex + 1);
         await studentDB(JSON.stringify(database, null, 2));
         return res.status(200).json({
-            message: 'Student deleted successfully',
-            data: student
+            message: 'Student deleted successfully'
         });
     } catch (error) {
         return res.status(500).json({
